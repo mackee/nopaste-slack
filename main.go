@@ -15,7 +15,7 @@ func main() {
 	flag.StringVar(&token, "token", "", "token")
 	flag.StringVar(&message, "message", "", "post message")
 	flag.StringVar(&channel, "channel", "general", "posting channel name")
-	flag.StringVar(&username, "username", "nopaste", "posting username")
+	flag.StringVar(&username, "username", "", "posting username")
 	flag.Parse()
 
 	if token == "" {
@@ -44,7 +44,11 @@ func main() {
 
 	var pretext string
 	if hostname, err := os.Hostname(); err == nil {
-		pretext = fmt.Sprintf("this nopaste posted by %s", hostname)
+		if username == "" {
+			pretext = fmt.Sprintf("this nopaste posted by %s", hostname)
+		} else {
+			pretext = fmt.Sprintf("this nopaste posted by %s@%s", username, hostname)
+		}
 	}
 
 	b, err := ioutil.ReadAll(os.Stdin)
